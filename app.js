@@ -115,11 +115,155 @@ const quiz = [
     
  },
 
+ {
+    question :'followingの意味は？',
+    answers:[
+    '～に続いて',
+　　'～に関して',
+    '～と比べて',
+    '～に付随して'
+    ],
+    correct:'～に続いて'
+    
+ },
+
+ {
+    question :'refer to の意味は？',
+    answers:[
+    '検討する',
+    '参照する',
+    '研究する',
+    'くつろぐ'
+    ],
+    correct:'参照する'
+    
+ },
+
+ {
+    question :'availableの意味は？',
+    answers:[
+    '実現できる',
+    '商業の',
+    '入手できる',
+    '達成できる'
+    ],
+    correct:'入手できる'
+    
+ },
+
+ {
+    question :'departmentの意味は？',
+    answers:[
+    '工場',
+    '落胆',
+    '研究所',
+    '部門'
+    ],
+    correct:'部門'
+    
+ },
+
+ {
+    question :'conferenceの意味は？',
+    answers:[
+    '会議',
+    '職場',
+    '大会',
+    '本社'
+    ],
+    correct:'会議'
+    
+ },
+
+ {
+    question :'according toの意味は？',
+    answers:[
+    '～に続いて',
+    '～として',
+    '～によると',
+    '～関して'
+    ],
+    correct:'～によると'
+    
+ },
+
+ {
+    question :'likelyの意味は？',
+    answers:[
+    '好きそうな',
+　　'おそらく',
+    '似ている',
+    '違っている'
+    ],
+    correct:'おそらく'
+    
+ },
+
+ {
+    question :'offerの意味は？',
+    answers:[
+    '出社する',
+　　'参照する',
+    '返事をする',
+    '申し出る'
+    ],
+    correct:'申し出る'
+    
+ },
+
+ {
+    question :'equipmentの意味は？',
+    answers:[
+    '機器',
+　　'研究',
+    '展示',
+    '寄付'
+    ],
+    correct:'機器'
+    
+ },
+
+ {
+    question :'provideの意味は？',
+    answers:[
+    '享受する',
+　　'参加する',
+    '提供する',
+    '購入する'
+    ],
+    correct:'提供する'
+    
+ },
+
 ];
 
 
 
+/*for(i=quiz.length -1; i>0;i--) {
+    let r = Math.floor(Math.random()*(i+1));
 
+    let tmp = quiz[i];
+    quiz[i]=quiz[r];
+    quiz[r]=tmp;
+}*/
+
+const selected = randomSelect(quiz.slice(),3);
+
+
+function randomSelect (quiz,num)
+{
+    let newQuiz = [];
+
+    while(newQuiz.length < num && quiz.length > 0)
+    {
+     const rand = Math.floor(Math.random() * quiz.length);
+
+     newQuiz.push(quiz[rand]);
+     quiz.splice(rand,1);
+    }
+
+    return newQuiz;
+};
 
 const quizLength = quiz.length;
 let quizIndex = 0;
@@ -130,7 +274,6 @@ let score = 0;
 const $button = document.getElementsByTagName('button');
 const buttonLength = $button.length;
 
-//定数の文字列をHTMLに反映される
 const setupQuiz = () =>{
     document.getElementById('js-question').textContent = quiz[quizIndex].question;
     let buttunIndex = 0;
@@ -138,8 +281,8 @@ const setupQuiz = () =>{
         $button[buttunIndex].textContent = quiz[quizIndex].answers[buttunIndex];
         buttunIndex++;
     }
-}
 
+}
 setupQuiz();
 
 const clickHandler = (e) => { if(quiz[quizIndex].correct === e.target.textContent){
@@ -166,6 +309,8 @@ while (handlerIndex < buttonLength) {
     });
     handlerIndex++;
 }
+
+
 
 //ボタンをクリックしたら正誤判定
 
