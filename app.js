@@ -1,5 +1,5 @@
 const quiz = [
- {
+  {
     question:'anywayの意味は？',
     answers: [
     'とにかく',
@@ -233,85 +233,81 @@ const quiz = [
     ],
     correct:'提供する'
     
- },
-
+ }
 ];
 
+// ランダムに5つのクイズオブジェクトを抽出
+function getRandomQuizzes(quiz, num) {
+  if (num > quiz.length) {
+    throw new Error("要求数がリストの長さを超えています");
+  }
+
+  const shuffledQuizList = quiz.sort(() => 0.5 - Math.random()); // クイズリストをシャッフル
+  return shuffledQuizList.slice(0, num); // ランダムに選択された5つのクイズを取得
+}
+
+const selectedQuizzes = getRandomQuizzes(quiz, 5);
+console.log(selectedQuizzes);
 
 
-/*for(i=quiz.length -1; i>0;i--) {
-    let r = Math.floor(Math.random()*(i+1));
-
-    let tmp = quiz[i];
-    quiz[i]=quiz[r];
-    quiz[r]=tmp;
-}*/
-
-const selected = randomSelect(quiz.slice(),3);
 
 
-function randomSelect (quiz,num)
-{
-    let newQuiz = [];
+const $window = window;
+const $doc = document;
+const $question = $doc.getElementById('js-question');
+const $buttons = $doc.querySelectorAll('.btn');
 
-    while(newQuiz.length < num && quiz.length > 0)
-    {
-     const rand = Math.floor(Math.random() * quiz.length);
-
-     newQuiz.push(quiz[rand]);
-     quiz.splice(rand,1);
-    }
-
-    return newQuiz;
-};
-
-const quizLength = quiz.length;
-let quizIndex = 0;
+const quizLen = quiz.length;
+let quizCount = 0;
 let score = 0;
 
-
-
-const $button = document.getElementsByTagName('button');
-const buttonLength = $button.length;
-
-const setupQuiz = () =>{
-    document.getElementById('js-question').textContent = quiz[quizIndex].question;
-    let buttunIndex = 0;
-    while(buttunIndex < buttonLength){
-        $button[buttunIndex].textContent = quiz[quizIndex].answers[buttunIndex];
-        buttunIndex++;
-    }
-
-}
-setupQuiz();
-
-const clickHandler = (e) => { if(quiz[quizIndex].correct === e.target.textContent){
-    window.alert('正解◎');
-    score++;
-  } else {
-    window.alert('残念×');
-  }
-
-  quizIndex++;
+const init = () => {
+  $question.textContent = quiz[quizCount].question;
   
-  if(quizIndex < quizLength) {
-    setupQuiz();  
-  } else{
-   window.alert('終了です。あなたの正解数は'+ score + '/'+ quizLength + 'です。お疲れ様でした。');
+  const buttonLen = $buttons.length;
+  let btnIndex = 0;
+  
+  while(btnIndex < buttonLen){
+    $buttons[btnIndex].textContent = quiz[quizCount].answers[btnIndex];
+    btnIndex++;
   }
-
 };
 
-let handlerIndex = 0;
-while (handlerIndex < buttonLength) {
-    $button[handlerIndex].addEventListener('click',(e)=>{
-        clickHandler (e);
-    });
-    handlerIndex++;
+const goToNext = () => {
+  quizCount++;
+  if(quizCount < 10){
+    init(quizCount);
+  } else {
+    // $window.alert('クイズ終了！');
+    showEnd();
+  }
+};
+
+const judge = (elm) => {
+  if(elm.textContent === quiz[quizCount].correct){
+    $window.alert('正解!');
+    score++;
+  } else {
+    $window.alert('不正解!');
+  }
+  goToNext();
+};
+
+const showEnd = () => {
+  $question.textContent = '終了！あなたのスコアは' + score + '/' + "10" + 'です';
+  
+  const $items = $doc.getElementById('js-items');
+  $items.style.visibility = 'hidden';
+};
+
+init();
+
+let answersIndex = 0;
+let answersLen = quiz[quizCount].answers.length;
+
+while(answersIndex < answersLen){
+  $buttons[answersIndex].addEventListener('click', (e) => {
+    judge(e.target);
+  });
+  answersIndex++;
 }
-
-
-
-//ボタンをクリックしたら正誤判定
-
-
